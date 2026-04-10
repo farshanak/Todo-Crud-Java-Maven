@@ -1,0 +1,8 @@
+{
+  "metric": "file-count",
+  "baseline": 5,
+  "direction": "monitor",
+  "capturedAt": "2026-04-10T22:30:00Z",
+  "sourceFiles": 5,
+  "testFiles": 4
+}
