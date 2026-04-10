@@ -50,3 +50,44 @@ jobs:
         run: ./mvnw test -B -Dtest="com.example.todo.integration.*Test"
       - name: Generate JaCoCo report
         run: ./mvnw jacoco:report -B
+
+  validate-pr-title:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            chore
+            refactor
+            test
+            deps
+            ci
+            style
+            perf
+          requireScope: false
+
+  validate-branch-name:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          PATTERN="^(feat|fix|docs|chore|refactor|test|deps|ci|step5|step6)/"
+          if [[ "$BRANCH" == "main" || "$BRANCH" == "master" || "$BRANCH" == "develop" ]]; then
+            echo "Default branch — skipping validation"
+            exit 0
+          fi
+          if [[ ! "$BRANCH" =~ $PATTERN ]]; then
+            echo "::error::Invalid branch name: $BRANCH"
+            echo "Branch must match: feat/, fix/, docs/, chore/, refactor/, test/, deps/"
+            exit 1
+          fi
+          echo "Branch name valid: $BRANCH"
