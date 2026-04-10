@@ -1,0 +1,46 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Environment files (NEVER bake secrets)
+.env
+.env.*
+!.env.example
+
+# Build artifacts
+target
+*.jar
+*.class
+
+# IDE and editor
+.vscode
+.idea
+*.swp
+*.swo
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation (not needed at runtime)
+docs
+*.md
+!README.md
+
+# Test artifacts
+surefire-reports
+
+# Logs
+*.log
+logs
+
+# Docker (prevent recursive copies)
+Dockerfile*
+docker-compose*
+.docker
+
+# Mault
+.claude
+.mault
