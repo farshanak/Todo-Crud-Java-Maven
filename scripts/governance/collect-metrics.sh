@@ -2,7 +2,7 @@
 # Governance Metrics Collection
 # Collects and reports governance health metrics.
 
-set -euo pipefail
+set -uo pipefail
 
 SRC_DIR="src/main/java"
 TEST_DIR="src/test/java"
@@ -21,7 +21,7 @@ echo "Source LOC: $SRC_LINES"
 # Test metrics
 TEST_FILES=$(find "$TEST_DIR" -name "*.java" -type f 2>/dev/null | wc -l | tr -d ' ')
 TEST_LINES=$(find "$TEST_DIR" -name "*.java" -type f -exec cat {} + 2>/dev/null | wc -l | tr -d ' ')
-TEST_COUNT=$(grep -r "@Test" "$TEST_DIR" --include="*.java" -c 2>/dev/null || echo 0)
+TEST_COUNT=$(grep -r "@Test" "$TEST_DIR" --include="*.java" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 echo "Test files: $TEST_FILES"
 echo "Test LOC: $TEST_LINES"
 echo "Test count: $TEST_COUNT"
@@ -33,9 +33,10 @@ if [ "$SRC_LINES" -gt 0 ]; then
 fi
 
 # Quality metrics
-DISABLED=$(grep -r "@Disabled" "$TEST_DIR" --include="*.java" -c 2>/dev/null || echo 0)
-SILENT_CATCHES=$(find "$SRC_DIR" -name "*.java" -exec grep -lP 'catch\s*\([^)]*\)\s*\{[\s]*\}' {} + 2>/dev/null | wc -l | tr -d ' ')
+DISABLED=$(grep -rl "@Disabled" "$TEST_DIR" --include="*.java" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+SILENT_CATCHES=$(find "$SRC_DIR" -name "*.java" -exec grep -lP 'catch\s*\([^)]*\)\s*\{[\s]*\}' {} + 2>/dev/null | wc -l | tr -d ' ' || echo 0)
 echo "Disabled tests: $DISABLED"
 echo "Silent catches: $SILENT_CATCHES"
 
 echo "========================================"
+exit 0
