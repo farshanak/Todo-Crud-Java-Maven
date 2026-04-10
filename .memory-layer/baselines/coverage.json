@@ -1,0 +1,7 @@
+{
+  "metric": "coverage",
+  "baseline": 80,
+  "direction": "up",
+  "capturedAt": "2026-04-10T22:30:00Z",
+  "files": {}
+}

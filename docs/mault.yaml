@@ -1,0 +1,149 @@
+# ============================================================================
+# Mault Configuration — Todo CRUD Application (Java/Maven)
+# ============================================================================
+# Language tier: Minimum Viable (Java)
+# Detectors: 9 polyglot use-cases (UC01-UC11)
+# ============================================================================
+
+version: "1.0"
+language: java
+framework: spring-boot
+
+# ============================================================================
+# DETECTORS — Polyglot (Language-Agnostic)
+# ============================================================================
+Detectors:
+  # UC01: Directory Reinforcement
+  UC01:
+    enabled: true
+    severity: error
+    rules:
+      - pattern: "**/*Controller.java"
+        allowedIn: ["src/main/java/**/controller/"]
+        message: "Controllers must be in a controller/ package"
+      - pattern: "**/*Repository.java"
+        allowedIn: ["src/main/java/**/repository/"]
+        message: "Repositories must be in a repository/ package"
+      - pattern: "**/*Service.java"
+        allowedIn: ["src/main/java/**/service/", "src/main/java/**/services/"]
+        message: "Services must be in a service/ package"
+      - pattern: "**/*Config*.java"
+        allowedIn: ["src/main/java/**/config/"]
+        message: "Configuration classes must be in a config/ package"
+
+  # UC02: Legacy Prevention
+  UC02:
+    enabled: true
+    severity: warning
+
+  # UC04: Environment Reinforcement
+  UC04:
+    enabled: true
+    severity: error
+    rules:
+      - check: file_exists
+        path: ".env.example"
+        message: ".env.example must exist"
+      - check: file_not_tracked
+        path: ".env"
+        message: ".env must not be committed"
+
+  # UC05: Obsolete Folders
+  UC05:
+    enabled: true
+    severity: error
+    obsoletePaths:
+      - path: "src/main/webapp/"
+        message: "Use src/main/resources/static/ for Spring Boot"
+      - path: "lib/"
+        message: "Use Maven dependencies in pom.xml"
+      - path: "bin/"
+        message: "Add bin/ to .gitignore"
+
+  # UC06: Temp File Cleanup
+  UC06:
+    enabled: true
+    severity: error
+    patterns:
+      - "*.tmp"
+      - "*.bak"
+      - "*.swp"
+      - "*.class"
+      - "*.jar"
+      - "*.log"
+
+  # UC07: Flat Architecture
+  UC07:
+    enabled: true
+    severity: warning
+    maxRootFiles: 20
+
+  # UC08: Config Chaos
+  UC08:
+    enabled: true
+    severity: warning
+    configFiles:
+      - pattern: "application*.properties"
+        allowedIn: ["src/main/resources/", "src/test/resources/"]
+      - pattern: "application*.yml"
+        allowedIn: ["src/main/resources/", "src/test/resources/"]
+
+  # UC09: File Proliferation
+  UC09:
+    enabled: true
+    severity: warning
+
+  # UC11: Overcrowded Folders
+  UC11:
+    enabled: true
+    severity: warning
+    maxFilesPerFolder: 15
+
+# ============================================================================
+# DEPRECATED PATTERNS (UC02 detail)
+# ============================================================================
+deprecatedPatterns:
+  - pattern: "javax.persistence"
+    replacement: "jakarta.persistence"
+    message: "Use jakarta.persistence (Jakarta EE migration)"
+  - pattern: "org.junit.Assert"
+    replacement: "org.junit.jupiter.api.Assertions"
+    message: "Use JUnit 5 Assertions"
+  - pattern: "org.junit.Test"
+    replacement: "org.junit.jupiter.api.Test"
+    message: "Use JUnit 5 @Test"
+  - pattern: "org.springframework.boot.autoconfigure.EnableAutoConfiguration"
+    replacement: "@SpringBootApplication"
+    message: "Use @SpringBootApplication"
+
+# ============================================================================
+# CONVENTIONS
+# ============================================================================
+conventions:
+  naming:
+    classes: PascalCase
+    methods: camelCase
+    packages: lowercase
+    constants: UPPER_SNAKE_CASE
+    testClasses: "*Test"
+    integrationTestClasses: "*IntegrationTest"
+  structure:
+    maxFileLength: 600
+    warnFileLength: 300
+    maxMethodLength: 50
+
+# ============================================================================
+# GOVERNANCE (Ratchet Baselines)
+# ============================================================================
+governance:
+  ratchet:
+    enabled: true
+    baselineDir: ".memory-layer/baselines/"
+    metrics:
+      - name: coverage
+        file: "coverage.json"
+        direction: up
+        minimum: 80
+      - name: file-count
+        file: "file-count.json"
+        direction: monitor

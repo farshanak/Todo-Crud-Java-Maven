@@ -41,5 +41,6 @@ secrets.yaml
 
 # Mault / Internal
 .mault/
-.memory-layer/
+.memory-layer/*
+!.memory-layer/baselines/
 .claude/hooks/
