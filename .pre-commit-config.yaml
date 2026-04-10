@@ -74,3 +74,68 @@ repos:
         files: \.java$
         pass_filenames: false
         stages: [pre-commit]
+
+  # =========================================================================
+  # LAYER 7: IRON DOME — Silent Catch Ratchet
+  # =========================================================================
+  - repo: local
+    hooks:
+      - id: silent-catch-ratchet
+        name: Silent Catch Ratchet (Iron Dome)
+        entry: bash scripts/governance/check-silent-catches.sh
+        language: system
+        files: \.java$
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # =========================================================================
+  # LAYER 8: RISING TIDE — Mock Tax (2x Rule)
+  # =========================================================================
+  - repo: local
+    hooks:
+      - id: mock-tax
+        name: Mock Tax Enforcer (Rising Tide)
+        entry: bash scripts/governance/check-mock-tax.sh
+        language: system
+        files: \.java$
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # =========================================================================
+  # LAYER 9: SRP GUARDRAILS — File/Method Size
+  # =========================================================================
+  - repo: local
+    hooks:
+      - id: guardrails
+        name: SRP Guardrails (File Size)
+        entry: bash scripts/governance/guardrails-check.sh
+        language: system
+        files: \.java$
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # =========================================================================
+  # LAYER 10: TEST DISCIPLINE — Skipped Tests
+  # =========================================================================
+  - repo: local
+    hooks:
+      - id: skipped-tests
+        name: Skipped Test Discipline
+        entry: bash scripts/governance/check-skipped-tests.sh
+        language: system
+        files: \.java$
+        pass_filenames: false
+        stages: [pre-commit]
+
+  # =========================================================================
+  # LAYER 11: BUDDY SYSTEM — Integration Test Pairing
+  # =========================================================================
+  - repo: local
+    hooks:
+      - id: integration-pairing
+        name: Integration Test Pairing (Buddy System)
+        entry: bash scripts/governance/verify-integration-pairing.sh
+        language: system
+        files: \.java$
+        pass_filenames: false
+        stages: [pre-commit]

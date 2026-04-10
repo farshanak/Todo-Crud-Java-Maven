@@ -1,0 +1,11 @@
+# Gitleaks configuration for secret detection in CI
+title = "Gitleaks Config"
+
+[allowlist]
+  description = "Allowlisted files and patterns"
+  paths = [
+    ".env.example",
+    ".secrets.baseline",
+    "src/test/",
+    "tests/",
+  ]

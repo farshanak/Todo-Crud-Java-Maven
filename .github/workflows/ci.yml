@@ -51,6 +51,33 @@ jobs:
       - name: Generate JaCoCo report
         run: ./mvnw jacoco:report -B
 
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: SRP Guardrails
+        run: bash scripts/governance/guardrails-check.sh
+      - name: Skipped Test Discipline
+        run: bash scripts/governance/check-skipped-tests.sh
+      - name: Integration Test Pairing
+        run: bash scripts/governance/verify-integration-pairing.sh
+      - name: Governance Metrics
+        run: bash scripts/governance/collect-metrics.sh
+
+  gitleaks:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   validate-pr-title:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -80,7 +107,7 @@ jobs:
       - name: Validate branch name
         run: |
           BRANCH="${{ github.head_ref }}"
-          PATTERN="^(feat|fix|docs|chore|refactor|test|deps|ci|step5|step6)/"
+          PATTERN="^(feat|fix|docs|chore|refactor|test|deps|ci|step5|step6|step7|step8)/"
           if [[ "$BRANCH" == "main" || "$BRANCH" == "master" || "$BRANCH" == "develop" ]]; then
             echo "Default branch — skipping validation"
             exit 0
