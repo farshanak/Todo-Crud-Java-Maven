@@ -1,0 +1,45 @@
+# Build output
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+.project
+.classpath
+.settings/
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+*.env
+!.env.example
+credentials.json
+secrets.yaml
+*.pem
+*.key
+*.crt
+
+# Logs
+*.log
+
+# Mault / Internal
+.mault/
+.memory-layer/
+.claude/hooks/
